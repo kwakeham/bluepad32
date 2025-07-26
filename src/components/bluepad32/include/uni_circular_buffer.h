@@ -10,9 +10,9 @@
 // UNI_CIRCULAR_BUFFER_SIZE represents how many packets can be queued
 // Multiple gamepads could be connected at the same time, each queuing
 // multiple packets: Think of 8 gamepads wanted to rumble at the same time.
-#define UNI_CIRCULAR_BUFFER_SIZE 32
+#define UNI_CIRCULAR_BUFFER_SIZE 64
 // UNI_CIRCULAR_BUFFER_DATA_SIZE represents the max size of each packet
-#define UNI_CIRCULAR_BUFFER_DATA_SIZE 128
+#define UNI_CIRCULAR_BUFFER_DATA_SIZE 256
 
 enum {
     UNI_CIRCULAR_BUFFER_ERROR_OK = 0,
