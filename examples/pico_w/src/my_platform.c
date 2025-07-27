@@ -7,6 +7,7 @@
 #include <pico/cyw43_arch.h>
 #include <pico/time.h>
 #include <uni.h>
+#include <rc.h>  // Adjust the path based on the actual header file location
 
 #include "sdkconfig.h"
 

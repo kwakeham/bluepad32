@@ -77,8 +77,19 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 
 add_subdirectory(${BLUEPAD32_ROOT}/src/components/bluepad32 libbluepad32)
 
+# Add the path to the pico_rc submodule
+add_subdirectory(${BLUEPAD32_ROOT}/external/pico_rc pico_rc)
+
+# Link the pico_rc library to your project
+target_link_libraries(${PROJECT_NAME} PUBLIC pico_rc)
+
+# If pico_rc has include files, add them to the include directories
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${BLUEPAD32_ROOT}/external/pico_rc/include/pico
+)
+
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
-pico_enable_stdio_uart(${PROJECT_NAME} 1)
+pico_enable_stdio_uart(${PROJECT_NAME} 0)
 
 # create map/bin/hex/uf2 file in addition to ELF.
 pico_add_extra_outputs(${PROJECT_NAME})
