@@ -1,3 +1,6 @@
 [submodule "external/btstack"]
 	path = external/btstack
 	url = https://github.com/bluekitchen/btstack.git
+[submodule "external/pico_rc"]
+	path = external/pico_rc
+	url = https://github.com/jdolinay/pico_rc.git
