@@ -9,6 +9,9 @@
 #include <uni.h>
 #include <rc.h>  // Adjust the path based on the actual header file location
 
+#define SERVO1_PIN 2
+#define SERVO2_PIN 3
+
 #include "sdkconfig.h"
 
 // Sanity check
@@ -19,6 +22,8 @@
 // Declarations
 static void trigger_event_on_gamepad(uni_hid_device_t* d);
 
+static rc_servo myServo1;
+static rc_servo myServo2;
 //
 // Platform Overrides
 //
@@ -50,6 +55,15 @@ static void my_platform_on_init_complete(void) {
     logi("my_platform: on_init_complete()\n");
 
     // Safe to call "unsafe" functions since they are called from BT thread
+
+    //Should this be here or after?
+    // Initialize servos
+    myServo1 = rc_servo_init(SERVO1_PIN);
+    myServo2 = rc_servo_init(SERVO2_PIN);
+
+    // Start controlling the servos (generate PWM signal)
+    rc_servo_start(&myServo1, 90);  // Start at 90 degrees
+    rc_servo_start(&myServo2, 90);
 
     // Start scanning and autoconnect to supported controllers.
     uni_bt_start_scanning_and_autoconnect_unsafe();
@@ -117,6 +131,19 @@ static void my_platform_on_controller_data(uni_hid_device_t* d, uni_controller_t
     switch (ctl->klass) {
         case UNI_CONTROLLER_CLASS_GAMEPAD:
             gp = &ctl->gamepad;
+
+            //Test ouptut to servos
+            // Map gamepad axis values to servo positions
+            int16_t axis_x = gp->axis_x;  // Range: -512 to 512
+            int16_t axis_y = gp->axis_y;
+
+            // Convert axis values to pulse widths (e.g., 1000 to 2000 microseconds)
+            uint32_t pulse1 = 1500 + (axis_x * 500 / 512);  // Map to 1000-2000 range
+            uint32_t pulse2 = 1500 + (axis_y * 500 / 512);
+
+            // Set servo positions
+            rc_servo_set_micros(&myServo1, pulse1);
+            rc_servo_set_micros(&myServo2, pulse2);
 
             // Debugging
             // Axis ry: control rumble
